@@ -23,7 +23,7 @@ services:
       DB_USER: "postgres"
       DB_PASSWORD: "postgres"
     networks:
-      - stayhome-network
+      - project-network
     volumes:
       - "./config/keycloak/Stayhome.realm.json:/tmp/Stayhome.realm.json"
       - "./config/keycloak/stayhome-theme:/opt/jboss/keycloak/themes/stayhome"
@@ -40,14 +40,14 @@ services:
       - "project-data:/var/lib/postgresql/data"
       - "./config/db:/docker-entrypoint-initdb.d"
     networks:
-      - stayhome-network
+      - project-network
 
   hapi-fhir:
     image: uwcirg/hapi-fhir-oauth2-starter
     environment:
       JAVA_OPTIONS: "-Dhapi.properties=/stayhome/hapi.properties"
     networks:
-      - stayhome-network
+      - project-network
     volumes:
       - "./config/fhir/hapi.properties:/stayhome/hapi.properties"
     depends_on:
