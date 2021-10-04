@@ -1,34 +1,19 @@
 version: "3.7"
 services:
-  keycloak:
-    image: jboss/keycloak:9.0.0
-    restart: unless-stopped
-    command:
-      [
-        "-b",
-        "0.0.0.0",
-        "-Dkeycloak.migration.action=import",
-        "-Dkeycloak.migration.provider=singleFile",
-        "-Dkeycloak.profile.feature.upload_scripts=enabled",
-        "-Dkeycloak.migration.file=/tmp/Stayhome.realm.json",
-        "-Dkeycloak.migration.strategy=IGNORE_EXISTING",
-      ]
-    environment:
-      KEYCLOAK_HOSTNAME: "keycloak.local.stayhome.app:4400"
-      PROXY_ADDRESS_FORWARDING: "true"
-      DB_VENDOR: "postgres"
-      DB_ADDR: "postgres"
-      DB_PORT: 5432
-      DB_DATABASE: "stayhome_keycloak"
-      DB_USER: "postgres"
-      DB_PASSWORD: "postgres"
-    networks:
-      - project-network
-    volumes:
-      - "./config/keycloak/Stayhome.realm.json:/tmp/Stayhome.realm.json"
-      - "./config/keycloak/stayhome-theme:/opt/jboss/keycloak/themes/stayhome"
+
+  web:
+    image: "hapiproject/hapi:latest"
     depends_on:
       - postgres
+    ports:
+      - "8090:8080"
+    configs:
+      - source: hapi
+        target: /data/hapi/application.yaml
+    volumes:
+      - "./config/hapi:/data/hapi/"
+    environment:
+      SPRING_CONFIG_LOCATION: 'file:///data/hapi/application.yaml'
 
   postgres:
     image: postgres:11-alpine
@@ -37,24 +22,38 @@ services:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
     volumes:
-      - "project-data:/var/lib/postgresql/data"
+      - "postgres-data:/var/lib/postgresql/data"
       - "./config/db:/docker-entrypoint-initdb.d"
-    networks:
-      - project-network
-
-  hapi-fhir:
-    image: uwcirg/hapi-fhir-oauth2-starter
-    environment:
-      JAVA_OPTIONS: "-Dhapi.properties=/stayhome/hapi.properties"
-    networks:
-      - project-network
-    volumes:
-      - "./config/fhir/hapi.properties:/stayhome/hapi.properties"
-    depends_on:
-      - postgres
-
+configs:
+  hapi:
+     external: true
 volumes:
-  project-data:
+    postgres-data:
 
-networks:
-  project-network:
+  # For future auth / ingress stuff
+  # ingress:
+  #   image: nginx:1.17.9-alpine
+  #   ports:
+  #     - "${INGRESS_PORT:-4400}:443"
+  #   volumes:
+  #     - "./config/certs:/stayhome-certs"
+  #     - ./nginx.conf:/etc/nginx/nginx.conf
+  #   depends_on:
+  #     - keycloak
+
+  # keycloak:
+  #   image: jboss/keycloak:9.0.0
+  #   restart: unless-stopped
+  #   environment:
+  #     KEYCLOAK_USER: admin
+  #     KEYCLOAK_PASSWORD: password
+  #     # KEYCLOAK_HOSTNAME: "localhost:4400"
+  #     PROXY_ADDRESS_FORWARDING: "true"
+  #     DB_VENDOR: "postgres"
+  #     DB_ADDR: "postgres"
+  #     DB_PORT: 5432
+  #     DB_DATABASE: "keycloak"
+  #     DB_USER: "postgres"
+  #     DB_PASSWORD: "postgres"
+  #   depends_on:
+  #     - postgres
