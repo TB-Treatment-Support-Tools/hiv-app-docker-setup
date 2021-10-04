@@ -1,0 +1,2 @@
+config/certs/keycloak.local.app-key.pem
+config/certs/keycloak.local.app.pem

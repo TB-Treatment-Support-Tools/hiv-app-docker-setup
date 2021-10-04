@@ -1,6 +1,16 @@
 version: "3.7"
 services:
 
+  ingress:
+    image: nginx:1.17.9-alpine
+    ports:
+      - "${INGRESS_PORT:-4400}:443"
+    volumes:
+      - "./config/certs:/certs"
+      - "./config/ingress:/etc/nginx/conf.d"
+    depends_on:
+      - postgres
+      - keycloak
   web:
     image: "hapiproject/hapi:latest"
     depends_on:
@@ -14,7 +24,20 @@ services:
       - "./config/hapi:/data/hapi/"
     environment:
       SPRING_CONFIG_LOCATION: 'file:///data/hapi/application.yaml'
-
+  keycloak:
+    image: jboss/keycloak:9.0.0
+    restart: unless-stopped
+    environment:
+      KEYCLOAK_HOSTNAME: "keycloak.local.app:4400"
+      PROXY_ADDRESS_FORWARDING: "true"
+      DB_VENDOR: "postgres"
+      DB_ADDR: "postgres"
+      DB_PORT: 5432
+      DB_DATABASE: "keycloak"
+      DB_USER: "postgres"
+      DB_PASSWORD: "postgres"
+    depends_on:
+      - postgres
   postgres:
     image: postgres:11-alpine
     restart: unless-stopped
