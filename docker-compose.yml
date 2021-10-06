@@ -11,21 +11,19 @@ services:
     depends_on:
       - postgres
       - keycloak
+
   web:
     image: "hapiproject/hapi:latest"
     depends_on:
       - postgres
     ports:
       - "8090:8080"
-    configs:
-      - source: hapi
-        target: /data/hapi/application.yaml
     volumes:
       - "./config/hapi:/data/hapi/"
     environment:
       SPRING_CONFIG_LOCATION: 'file:///data/hapi/application.yaml'
   keycloak:
-    image: jboss/keycloak:9.0.0
+    image: jboss/keycloak:15.0.2
     restart: unless-stopped
     environment:
       KEYCLOAK_HOSTNAME: "keycloak.local.app:4400"
