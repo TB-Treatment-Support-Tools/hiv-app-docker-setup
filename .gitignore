@@ -2,3 +2,5 @@ config/certs/keycloak.local.app-key.pem
 config/certs/keycloak.local.app.pem
 config/chat/chat.local.me.signing.key
 config/chat/media_store
+
+.env

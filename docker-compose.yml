@@ -1,6 +1,23 @@
 version: "3.7"
 services:
 
+  fhir-proxy:
+    build:
+      context: ../fhir-proxy/
+      dockerfile: Dockerfile
+      target: base
+    volumes:
+      - ../fhir-proxy/src:/usr/src/app/src
+    container_name: ts-node-docker
+    expose:
+      - '4000'
+    ports:
+      - '8100:4000'
+    command: yarn run docker-dev
+    environment:
+      - PROXY_PORT=$PROXY_PORT
+      - STREAM_KEY=$STREAM_KEY
+      - STREAM_TOKEN=$STREAM_TOKEN
   ingress:
     image: nginx:1.17.9-alpine
     ports:
@@ -12,7 +29,7 @@ services:
       - postgres
       - keycloak
 
-  web:
+  hapi:
     image: "hapiproject/hapi:latest"
     depends_on:
       - postgres
@@ -25,6 +42,8 @@ services:
   keycloak:
     image: jboss/keycloak:15.0.2
     restart: unless-stopped
+    ports:
+      - "8080:8080"
     environment:
       KEYCLOAK_HOSTNAME: "keycloak.local.app:4400"
       PROXY_ADDRESS_FORWARDING: "true"
@@ -45,22 +64,22 @@ services:
     volumes:
       - "postgres-data:/var/lib/postgresql/data"
       - "./config/db:/docker-entrypoint-initdb.d"
-  synapse:
-    image: "matrixdotorg/synapse:latest"
-    container_name: "synapse"
-    volumes:
-        - "./config/chat:/data"
-    environment:
-        VIRTUAL_HOST: "chat.local.me"
-        VIRTUAL_PORT: 8008
-        LETSENCRYPT_HOST: "chat.local.me"
-        SYNAPSE_SERVER_NAME: "chat.local.me"
-        SYNAPSE_REPORT_STATS: "yes"
+
 
 volumes:
     postgres-data:
 
+
+  # synapse:
+  #   image: "matrixdotorg/synapse:latest"
+  #   container_name: "synapse"
+  #   volumes:
+  #       - "./config/chat:/data"
+  #   environment:
+  #       SYNAPSE_SERVER_NAME: "chat.local.me"
+  #       SYNAPSE_REPORT_STATS: "yes"
   # For future auth / ingress stuff
+
   # ingress:
   #   image: nginx:1.17.9-alpine
   #   ports:

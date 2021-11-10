@@ -65,7 +65,7 @@ pid_file: /data/homeserver.pid
 # Otherwise, it should be the URL to reach Synapse's client HTTP listener (see
 # 'listeners' below).
 #
-#public_baseurl: https://example.com/
+public_baseurl: https://chat.local.app:4400/
 
 # Set the soft limit on the number of file descriptors synapse can use
 # Zero is used to indicate synapse should set the soft limit to the
@@ -1866,7 +1866,24 @@ saml2_config:
 # use 'oidc' for the idp_id to ensure that existing users continue to be
 # recognised.)
 #
-oidc_providers:
+# oidc_providers:
+#   - idp_id: keycloak
+#     idp_name: "Keycloak"
+#     issuer: "http://keycloak:8080?auth/realms/survey-app"
+#     discovery: false
+#     userinfo_endpoint: "https://keycloak.local.app:4400/auth/realms/survey-app/protocol/openid-connect/userinfo"
+#     authorization_endpoint: "https://keycloak.local.app:4400/auth/realms/survey-app/protocol/openid-connect/auth"
+#     token_endpoint: "https://keycloak.local.app:4400/auth/realms/survey-app/protocol/openid-connect/token"
+#     jwks_uri: "https://keycloak.local.app:4400/auth/realms/survey-app/protocol/openid-connect/certs"
+#     client_id: "synapse"
+#     client_secret: "55a69c78-f865-43ce-8f54-670fd0ca4b9e"
+#     scopes: ["openid", "profile"]
+#     skip_verification: true
+#     user_mapping_provider:
+#       config:
+#         localpart_template: "{{ user.preferred_username }}"
+#         display_name_template: "{{ user.name }}"
+
   # Generic example
   #
   #- idp_id: my_idp
@@ -1892,6 +1909,7 @@ oidc_providers:
   #  attribute_requirements:
   #    - attribute: userGroup
   #      value: "synapseUsers"
+
 
 
 # Enable Central Authentication Service (CAS) for registration and login.
@@ -2016,6 +2034,13 @@ sso:
     #
     #audiences:
     #    - "provided-by-your-issuer"
+
+jwt_config:
+    enabled: true
+    secret: "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhih+JgYlTALmG1U5aydLLuEh748O3jsYLIptI7pDuz6180hToyq8whvbn5Yhk7HH3FOwAlzKCHaLlNEXv7toZjBm7vHN3RV5UALwRF+2eC5mqTZqlbZH/p+cDUhVyqgiYGcn696MBPAaY3YbuhwNP/TMPNxWt241DhuTZR8Ko5cnzbYozAUHZ/WQuASh4xlSKGaF1yRAOkhcgYuTxF0Q2kzGgN4Oox16ogU6fhnzZz/HDbj5oD/e+Of7ReXKNk6ij4pe0+MgplXcs6JSRRo9vIarJ3UcSfNbbjt18GHLB7N1DoUl1gX3DVxPacZkbaPGcaADG8eWBffuxBwP3Zb3fwIDAQAB\n-----END PUBLIC KEY-----"
+    algorithm: "RS256"
+    audiences:
+      - "account"
 
 
 password_config:

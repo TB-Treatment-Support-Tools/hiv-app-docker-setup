@@ -1,0 +1,10 @@
+{
+    "resourceType": "Bundle",
+    "id": "med-upload",
+    "type": "transaction",
+    "entry": [
+      {
+          
+      }
+    ]
+  }
