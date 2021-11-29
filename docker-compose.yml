@@ -1,6 +1,5 @@
 version: "3.7"
 services:
-
   fhir-proxy:
     build:
       context: ../fhir-proxy/
@@ -28,7 +27,6 @@ services:
     depends_on:
       - postgres
       - keycloak
-
   hapi:
     image: "hapiproject/hapi:latest"
     depends_on:
@@ -69,7 +67,7 @@ services:
 volumes:
     postgres-data:
 
-
+  # Removed Chat Service
   # synapse:
   #   image: "matrixdotorg/synapse:latest"
   #   container_name: "synapse"
@@ -79,30 +77,3 @@ volumes:
   #       SYNAPSE_SERVER_NAME: "chat.local.me"
   #       SYNAPSE_REPORT_STATS: "yes"
   # For future auth / ingress stuff
-
-  # ingress:
-  #   image: nginx:1.17.9-alpine
-  #   ports:
-  #     - "${INGRESS_PORT:-4400}:443"
-  #   volumes:
-  #     - "./config/certs:/stayhome-certs"
-  #     - ./nginx.conf:/etc/nginx/nginx.conf
-  #   depends_on:
-  #     - keycloak
-
-  # keycloak:
-  #   image: jboss/keycloak:9.0.0
-  #   restart: unless-stopped
-  #   environment:
-  #     KEYCLOAK_USER: admin
-  #     KEYCLOAK_PASSWORD: password
-  #     # KEYCLOAK_HOSTNAME: "localhost:4400"
-  #     PROXY_ADDRESS_FORWARDING: "true"
-  #     DB_VENDOR: "postgres"
-  #     DB_ADDR: "postgres"
-  #     DB_PORT: 5432
-  #     DB_DATABASE: "keycloak"
-  #     DB_USER: "postgres"
-  #     DB_PASSWORD: "postgres"
-  #   depends_on:
-  #     - postgres

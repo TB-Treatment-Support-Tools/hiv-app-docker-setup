@@ -1,0 +1,257 @@
+{
+    "resourceType": "Questionnaire",
+    "id": "52",
+    "meta": {
+        "versionId": "6",
+        "lastUpdated": "2021-11-29T16:37:51.509Z",
+        "source": "#ykqoSFReNRgyA4PF",
+        "profile": [
+            "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire|2.7"
+        ],
+        "tag": [
+            {
+                "code": "lformsVersion: 29.2.1"
+            }
+        ]
+    },
+    "name": "Submit a photo",
+    "title": "submit a photo",
+    "status": "draft",
+    "experimental": false,
+    "subjectType": [
+        "Patient"
+    ],
+    "effectivePeriod": {
+        "start": "2021-10-14T14:24:43.529Z",
+        "end": "2021-12-16T05:00:00.000Z"
+    },
+    "item": [
+        {
+            "linkId": "adherence-question",
+            "code": [
+                {
+                    "system": "custom",
+                    "code": "adherence-question-1",
+                    "display": "Have you been taking your medication regularly"
+                }
+            ],
+            "text": "Have you been taking your medication regularly",
+            "type": "boolean",
+            "required": false
+        },
+        {
+            "extension": [
+                {
+                    "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                    "valueCodeableConcept": {
+                        "coding": [
+                            {
+                                "system": "http://hl7.org/fhir/questionnaire-item-control",
+                                "code": "drop-down",
+                                "display": "Drop down"
+                            }
+                        ],
+                        "text": "Drop down"
+                    }
+                }
+            ],
+            "linkId": "/non-adherence-factors",
+            "code": [
+                {
+                    "system": "http://localhost:8000",
+                    "code": "non-adherence-factors",
+                    "display": "Non-adherence factors"
+                }
+            ],
+            "text": "Non-adherence factors",
+            "type": "open-choice",
+            "enableWhen": [
+                {
+                    "question": "adherence-question",
+                    "operator": "=",
+                    "answerBoolean": false
+                }
+            ],
+            "enableBehavior": "all",
+            "required": true,
+            "answerOption": [
+                {
+                    "valueCoding": {
+                        "display": "I forgot to take it"
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "display": "I ran out of medication"
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "display": "My medication is lost or stolen"
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "display": "I didn’t have time to take it"
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "display": "I didn’t have it with me today"
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "display": "I didn’t have privacy to take it"
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "display": "I wasn’t feeling well"
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "display": "Other"
+                    }
+                }
+            ]
+        },
+        {
+            "linkId": "/feeling",
+            "code": [
+                {
+                    "system": "https://localhost:8000",
+                    "code": "/feeling",
+                    "display": "How have you been feeling lately?"
+                }
+            ],
+            "text": "How have you been feeling lately?",
+            "type": "integer",
+            "required": false,
+            "initial": [
+                {
+                    "valueInteger": 3
+                }
+            ]
+        },
+        {
+            "extension": [
+                {
+                    "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                    "valueCodeableConcept": {
+                        "coding": [
+                            {
+                                "system": "http://hl7.org/fhir/questionnaire-item-control",
+                                "code": "drop-down",
+                                "display": "Drop down"
+                            }
+                        ],
+                        "text": "Drop down"
+                    }
+                }
+            ],
+            "linkId": "/symptoms",
+            "code": [
+                {
+                    "system": "https://localhost:8000",
+                    "code": "/symptoms",
+                    "display": "Have you experienced any symptoms since your last report?"
+                }
+            ],
+            "text": "Have you experienced any symptoms since your last report?",
+            "type": "open-choice",
+            "required": false,
+            "answerOption": [
+                {
+                    "valueCoding": {
+                        "display": "Nausea or Vomiting"
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "display": "Upset Stomach"
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "display": "Loss of Vision"
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "display": "Other"
+                    }
+                }
+            ]
+        },
+        {
+            "linkId": "/test-photo",
+            "code": [
+                {
+                    "system": "custom",
+                    "code": "photo",
+                    "display": "Photograph of test strip"
+                }
+            ],
+            "text": "Photo of Test",
+            "type": "url",
+            "required": false
+        },
+        {
+            "extension": [
+                {
+                    "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                    "valueCodeableConcept": {
+                        "coding": [
+                            {
+                                "system": "http://hl7.org/fhir/questionnaire-item-control",
+                                "code": "drop-down",
+                                "display": "Drop down"
+                            }
+                        ],
+                        "text": "Drop down"
+                    }
+                }
+            ],
+            "linkId": "/support",
+            "code": [
+                {
+                    "system": "https://localhost:8000",
+                    "code": "support",
+                    "display": "Do you need any support today?"
+                }
+            ],
+            "text": "Do you need any support today?",
+            "type": "open-choice",
+            "required": false,
+            "answerOption": [
+                {
+                    "valueCoding": {
+                        "display": "Clinical support from a doctor or nurse"
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "display": "Support from a peer"
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "display": "Support from my partner"
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "display": "Help with app or test"
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "display": "Other"
+                    }
+                }
+            ]
+        }
+    ]
+}
