@@ -7,7 +7,6 @@ services:
       target: base
     volumes:
       - ../fhir-proxy/src:/usr/src/app/src
-    container_name: ts-node-docker
     expose:
       - '4000'
     ports:
@@ -17,6 +16,8 @@ services:
       - PROXY_PORT=$PROXY_PORT
       - STREAM_KEY=$STREAM_KEY
       - STREAM_TOKEN=$STREAM_TOKEN
+      - KEYCLOAK_ADMIN_TOKEN=$KEYCLOAK_ADMIN_TOKEN
+      - KEYCLOAK_BASE_URL=$KEYCLOAK_BASE_URL
   ingress:
     image: nginx:1.17.9-alpine
     ports:
@@ -66,14 +67,3 @@ services:
 
 volumes:
     postgres-data:
-
-  # Removed Chat Service
-  # synapse:
-  #   image: "matrixdotorg/synapse:latest"
-  #   container_name: "synapse"
-  #   volumes:
-  #       - "./config/chat:/data"
-  #   environment:
-  #       SYNAPSE_SERVER_NAME: "chat.local.me"
-  #       SYNAPSE_REPORT_STATS: "yes"
-  # For future auth / ingress stuff
