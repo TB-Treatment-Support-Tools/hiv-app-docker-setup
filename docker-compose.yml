@@ -29,7 +29,8 @@ services:
       - postgres
       - keycloak
   hapi:
-    image: "hapiproject/hapi:latest"
+    image: "hapiproject/hapi@sha256:e0681e8095ac16c8c39d43c58cdbc3159b24cedce2444a1ae6fd2180f61e774b"
+    #image: "hapi-fhir/hapi-fhir-jpaserver-starter"
     depends_on:
       - postgres
     ports:
